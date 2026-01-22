@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     siteName: "Aviorè Careers",
     images: [
       {
-        url: "/aviore-careers.jpg", // This should be the recruitment poster we designed
+        url: "/aviore-careers.PNG", // This should be the recruitment poster we designed
         width: 1200,
         height: 630,
         alt: "Avioré Recruitment Poster",
