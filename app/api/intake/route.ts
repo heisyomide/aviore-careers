@@ -87,7 +87,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true });
 
   } catch (err: any) {
-    console.error("TRANSMISSION_ERROR:", err.message);
+     console.error("TRANSMISSION_ERROR:",err.message);
+     "server error"
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }

@@ -1,7 +1,18 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, ArrowRight, CheckCircle, Mail, MapPin, Scissors, Briefcase, Truck, Users } from "lucide-react";
+import { 
+  Loader2, ArrowRight, CheckCircle, Mail, MapPin, 
+  Scissors, Briefcase, Truck, Users, Instagram, 
+  Facebook, Twitter, Globe 
+} from "lucide-react";
+
+// Custom TikTok Icon as Lucide doesn't have a standard one in all versions
+const TikTokIcon = ({ size }: { size: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+  </svg>
+);
 
 type Role = "designer" | "vendor" | "partner" | "collab" | "";
 
@@ -9,6 +20,7 @@ export default function IntakePage() {
   const [role, setRole] = useState<Role>("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showModal, setShowModal] = useState(true); // Verification Modal State
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,8 +53,85 @@ export default function IntakePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F4F4F4] text-black font-mono selection:bg-black selection:text-white flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-[#F4F4F4] text-black font-mono selection:bg-black selection:text-white flex flex-col lg:flex-row relative">
       
+      {/* --- VERIFICATION AFFAIRS MODAL --- */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 md:p-6"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="bg-white max-w-lg w-full p-8 md:p-12 shadow-2xl border border-black/5 text-center space-y-8 overflow-y-auto max-h-[90vh]"
+            >
+              <div className="space-y-2">
+                <h2 className="text-2xl font-black italic uppercase tracking-tighter">Verification_Affairs</h2>
+                <div className="h-0.5 w-12 bg-black mx-auto" />
+                <p className="text-[9px] text-black/40 uppercase tracking-[0.3em] font-bold">Pillar_Access_Protocol</p>
+              </div>
+
+              <div className="space-y-6">
+                <p className="text-[11px] leading-relaxed uppercase font-bold text-black/70 italic border-b border-black/5 pb-4">
+                  Connect with our official channels to synchronize with the Archive.
+                </p>
+
+                <div className="grid grid-cols-1 gap-3">
+                  {[
+                    { label: "Follow on Instagram", icon: <Instagram size={14} />, url: "https://www.instagram.com/shopaviore?igsh=MWkydTNnaXMxN3p0dg%3D%3D&utm_source=qr" },
+                    { label: "Follow on Facebook", icon: <Facebook size={14} />, url: "https://www.facebook.com/share/1PkLAnKXPM/?mibextid=wwXIfr" },
+                    { label: "Follow on TikTok", icon: <TikTokIcon size={14} />, url: "https://www.tiktok.com/@shopaviore?_r=1&_t=ZS-93Hp760xF4v" },
+                    { label: "Follow on Twitter", icon: <Twitter size={14} />, url: "https://x.com/shopaviore?s=21" },
+                  ].map((social) => (
+                    <div key={social.label} className="group flex flex-col gap-1">
+                      <a 
+                        href={social.url} 
+                        target="_blank" 
+                        className="flex items-center justify-between border border-black p-4 text-[10px] uppercase font-bold hover:bg-black hover:text-white transition-all"
+                      >
+                        {social.label} {social.icon}
+                      </a>
+                      <button 
+                        type="button"
+                        onClick={(e) => (e.currentTarget.innerText = "NOTED")}
+                        className="text-[8px] text-left uppercase text-black/30 hover:text-black transition-colors px-1"
+                      >
+                        [ I don't have this platform ]
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-6 border-t border-black/5 text-left space-y-4">
+                    <label className="text-[9px] uppercase text-black/30 block font-bold italic tracking-widest text-center underline">Submission_Source</label>
+                    <select className="w-full bg-[#F9F9F9] border border-black p-4 text-[10px] uppercase outline-none font-bold cursor-pointer">
+                        <option>How did you hear about us?</option>
+                        <option>Instagram</option>
+                        <option>Facebook</option>
+                        <option>TikTok</option>
+                        <option>LinkedIn</option>
+                        <option>Search Engine</option>
+                        <option>AI (ChatGPT/Gemini)</option>
+                        <option>Others</option>
+                    </select>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => setShowModal(false)}
+                className="w-full py-6 bg-black text-white text-[11px] uppercase tracking-[0.6em] font-black hover:bg-zinc-800 transition-all shadow-lg"
+              >
+                Continue
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* --- SIDEBAR: ATELIER IDENTITY --- */}
       <aside className="w-full lg:w-[420px] lg:h-screen lg:sticky lg:top-0 bg-white border-r border-black/10 p-8 md:p-12 flex flex-col justify-between">
         <div className="space-y-16">
@@ -79,7 +168,7 @@ export default function IntakePage() {
         </div>
 
         <div className="text-[9px] text-black/30 uppercase tracking-[0.3em] font-bold">
-          AVIORÉ © 2026 // Archive_Systems
+          AVIORÉ ©️ 2026 // Archive_Systems
         </div>
       </aside>
 
